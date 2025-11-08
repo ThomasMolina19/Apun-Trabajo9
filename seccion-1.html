@@ -1,692 +1,317 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>John Sneyder Tamayo Zapata - Conferencia</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Desarrollo de Prototipo para Terapia en Extremidades Superiores</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
     <style>
         * { font-family: 'Inter', sans-serif; }
-        
         body {
             background: #0a0a0a;
-            background-image: 
+            background-image:
                 radial-gradient(circle at 25% 25%, #1a1a2e 0%, transparent 50%),
                 radial-gradient(circle at 75% 75%, #16213e 0%, transparent 50%);
             min-height: 100vh;
         }
-        
-        .hero-header {
-            background: linear-gradient(135deg, #000000 0%, #1a1a2e 50%, #16213e 100%);
-            position: relative;
-            overflow: hidden;
-        }
-        
+        .hero-header { background: linear-gradient(135deg, #000 0%, #1a1a2e 50%, #16213e 100%); position: relative; overflow: hidden; }
         .hero-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            content: ''; position: absolute; inset: 0;
             background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23ffffff" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
-            opacity: 0.3;
+            opacity: .3;
         }
-        
-        .back-button {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
+        .back-button { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); backdrop-filter: blur(10px); transition: .3s ease; }
+        .back-button:hover { background: rgba(255,255,255,.2); transform: translateX(-5px); }
+        .content-card { background: rgba(255,255,255,.02); border: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(10px); transition: .3s ease; }
+        .content-card:hover { border-color: rgba(67,233,123,.3); box-shadow: 0 20px 40px rgba(0,0,0,.3); }
+        .nuclear-card { background: linear-gradient(135deg, rgba(67,233,123,.1) 0%, rgba(56,249,215,.1) 100%); border: 1px solid rgba(67,233,123,.3); }
+        .warning-card { background: linear-gradient(135deg, rgba(239,68,68,.1) 0%, rgba(220,38,38,.1) 100%); border: 1px solid rgba(239,68,68,.3); }
+        .success-card { background: linear-gradient(135deg, rgba(34,197,94,.1) 0%, rgba(22,163,74,.1) 100%); border: 1px solid rgba(34,197,94,.3); }
+        .info-card { background: linear-gradient(135deg, rgba(59,130,246,.1) 0%, rgba(37,99,235,.1) 100%); border: 1px solid rgba(59,130,246,.3); }
+        .tech-card { background: linear-gradient(135deg, rgba(147,51,234,.1) 0%, rgba(124,58,237,.1) 100%); border: 1px solid rgba(147,51,234,.3); }
+        .atom-pulse { animation: atom-pulse 3s infinite; }
+        @keyframes atom-pulse { 0%,100%{ box-shadow:0 0 20px rgba(67,233,123,.3); transform:scale(1)} 50%{ box-shadow:0 0 40px rgba(67,233,123,.6); transform:scale(1.05)} }
+        .text-glow { text-shadow: 0 0 20px rgba(255,255,255,.5); }
+        .hero-image { border: 2px solid rgba(67,233,123,.3); box-shadow: 0 25px 50px rgba(0,0,0,.5); }
+        .floating-atoms { position:absolute; inset:0; overflow:hidden; pointer-events:none; }
+        .atom { position:absolute; background:rgba(67,233,123,.1); border:2px solid rgba(67,233,123,.3); border-radius:50%; animation: float-atom 18s infinite ease-in-out; }
+        .atom:nth-child(1){ width:40px; height:40px; top:15%; left:10%; animation-delay:0s }
+        .atom:nth-child(2){ width:25px; height:25px; top:30%; left:85%; animation-delay:6s }
+        .atom:nth-child(3){ width:35px; height:35px; top:70%; left:15%; animation-delay:12s}
+        .atom:nth-child(4){ width:30px; height:30px; top:80%; left:75%; animation-delay:9s }
+        .atom:nth-child(5){ width:20px; height:20px; top:50%; left:50%; animation-delay:3s }
+        @keyframes float-atom {
+            0%,100%{ transform:translateY(0) rotate(0) scale(1); opacity:.3 }
+            33%{ transform:translateY(-20px) rotate(120deg) scale(1.2); opacity:.7 }
+            66%{ transform:translateY(-40px) rotate(240deg) scale(.8); opacity:.5 }
         }
-        
-        .back-button:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateX(-5px);
-        }
-        
-        .content-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-        
-        .content-card:hover {
-            border-color: rgba(0, 212, 255, 0.3);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-        
-        .gradient-card {
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(0, 153, 204, 0.1) 100%);
-            border: 1px solid rgba(0, 212, 255, 0.2);
-        }
-        
-        .step-number {
-            background: linear-gradient(135deg, #00d4ff, #0099cc);
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
-        }
-        
-        .benefit-icon {
-            background: rgba(0, 212, 255, 0.1);
-            border: 1px solid rgba(0, 212, 255, 0.3);
-        }
-        
-        .spec-card {
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, rgba(147, 51, 234, 0.05) 100%);
-            border: 1px solid rgba(0, 212, 255, 0.2);
-        }
-        
-        .impact-section {
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);
-            border: 1px solid rgba(0, 212, 255, 0.2);
-        }
-        
-        .text-glow {
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-        }
-        
-        .hero-image {
-            border: 2px solid rgba(0, 212, 255, 0.3);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-        }
-        
-        .floating-particles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            pointer-events: none;
-        }
-        
-        .particle {
-            position: absolute;
-            background: rgba(0, 212, 255, 0.1);
-            border-radius: 50%;
-            animation: float-particle 12s infinite ease-in-out;
-        }
-        
-        .particle:nth-child(1) { width: 20px; height: 20px; top: 10%; left: 20%; animation-delay: 0s; }
-        .particle:nth-child(2) { width: 15px; height: 15px; top: 20%; left: 80%; animation-delay: 3s; }
-        .particle:nth-child(3) { width: 25px; height: 25px; top: 70%; left: 10%; animation-delay: 6s; }
-        .particle:nth-child(4) { width: 18px; height: 18px; top: 80%; left: 70%; animation-delay: 9s; }
-        
-        @keyframes float-particle {
-            0%, 100% { transform: translateY(0px) scale(1); opacity: 0.3; }
-            50% { transform: translateY(-30px) scale(1.2); opacity: 0.7; }
-        }
-        
-        @media (max-width: 768px) {
-            .hero-header h1 { font-size: 2.5rem; }
-            .content-grid { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 768px){ .hero-header h1{ font-size:2.2rem } .content-grid{ grid-template-columns:1fr } }
     </style>
 </head>
 <body>
     <!-- Header -->
     <header class="hero-header text-white py-16 px-4 relative">
-        <div class="floating-particles">
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
+        <div class="floating-atoms">
+            <div class="atom"></div><div class="atom"></div><div class="atom"></div><div class="atom"></div><div class="atom"></div>
         </div>
-        
         <div class="max-w-6xl mx-auto relative z-10">
-            <a href="index.html" class="back-button inline-flex items-center text-white hover:text-blue-300 mb-8 px-6 py-3 rounded-full">
-                <i class="fas fa-arrow-left mr-3"></i>
-                Volver al inicio
+            <a href="index.html" class="back-button inline-flex items-center text-white hover:text-green-300 mb-8 px-6 py-3 rounded-full">
+                <i class="fas fa-arrow-left mr-3"></i> Volver al inicio
             </a>
-            
             <div class="mb-8">
-                <div class="inline-block p-4 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 mb-6">
-                    <i class="fas fa-hand-paper text-3xl text-white"></i>
+                <div class="inline-block p-4 rounded-full bg-gradient-to-r from-green-500 to-teal-400 mb-6 atom-pulse">
+                    <i class="fas fa-robot text-3xl text-white"></i>
                 </div>
             </div>
-            
-            <h1 class="text-5xl md:text-6xl font-bold mb-6 text-glow leading-tight">
-                Desarrollo de Prototipo para 
-                <span class="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                    Terapia en Extremidades Superiores
-                </span>
+            <h1 class="text-4xl md:text-5xl font-bold mb-6 text-glow leading-tight">
+                Desarrollo de <span class="bg-gradient-to-r from-green-400 to-teal-300 bg-clip-text text-transparent">prototipo para terapia en extremidades superiores</span>
             </h1>
-            
-            <div class="flex flex-col md:flex-row items-start md:items-center gap-6 mb-4">
+            <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
                 <div class="flex items-center gap-3">
-                    <i class="fas fa-user-tie text-blue-400 text-xl"></i>
-                    <span class="text-xl font-medium">John Sneyder Tamayo Zapata</span>
+                    <i class="fas fa-user-graduate text-green-400 text-xl"></i>
+                    <span class="text-xl font-medium">Maria Camila Quintero Garcia</span>
                 </div>
                 <div class="flex items-center gap-3">
-                    <i class="fas fa-id-card text-blue-400"></i>
-                    <span class="text-lg text-gray-300">ID: 1020482385</span>
+                    <i class="fas fa-building-columns text-green-400"></i>
+                    <span class="text-lg text-gray-300">Facultad de Minas • Ingeniería de Control • Sede Medellín</span>
                 </div>
-            </div>
-            
-            <div class="flex items-center gap-3 text-gray-300">
-                <i class="fas fa-university text-blue-400"></i>
-                <span class="text-lg">Facultad de Minas - Ingeniería de Control</span>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
+    <!-- Main -->
     <main class="max-w-6xl mx-auto px-4 py-16">
         <!-- Hero Image -->
         <div class="mb-12 rounded-3xl overflow-hidden hero-image">
-            <img src="https://images.unsplash.com/photo-1530497610245-94d3c16cda28?w=1200&h=400&fit=crop" 
-                 alt="Robotic hand therapy" 
-                 class="w-full h-80 object-cover">
+            <img src="https://images.unsplash.com/photo-1595867818082-083862f3d3c3?w=1200&h=400&fit=crop" alt="Interacción humano-robot en rehabilitación" class="w-full h-80 object-cover"/>
         </div>
 
-        <!-- Introduction Section -->
-        <div class="content-card rounded-3xl p-10 mb-12">
+        <!-- Introducción -->
+        <section class="content-card rounded-3xl p-10 mb-12">
             <div class="flex items-center gap-4 mb-8">
-                <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-2xl flex items-center justify-center">
-                    <i class="fas fa-info-circle text-2xl text-white"></i>
+                <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-teal-400 rounded-2xl flex items-center justify-center atom-pulse">
+                    <i class="fas fa-hand-holding-medical text-2xl text-white"></i>
                 </div>
                 <h2 class="text-4xl font-bold text-white">Introducción</h2>
             </div>
-            
-            <div class="space-y-6 text-gray-300 text-lg leading-relaxed">
-                <p class="border-l-4 border-blue-400 pl-6">
-                    La rehabilitación de pacientes con limitaciones motoras requiere movimientos controlados y seguros, 
-                    lo que permite la mejora continua en la movilidad y el desarrollo motriz del paciente.
-                </p>
-                <p class="border-l-4 border-cyan-400 pl-6">
-                    Este proyecto propone el desarrollo de un prototipo innovador para terapia en extremidades superiores, 
-                    utilizando tecnologías CAD/CAM, actuadores eléctricos/neumáticos y control programable mediante Arduino o PLC.
-                </p>
+            <p class="text-xl text-gray-200 leading-relaxed mb-6 border-l-4 border-green-400 pl-6">
+                La rehabilitación de pacientes con limitaciones motoras en miembros superiores exige movimientos <b>controlados y seguros</b>.
+                Este proyecto plantea un prototipo robótico que asista terapias repetitivas y medibles, contribuyendo a la mejora de la movilidad y al desarrollo motriz.
+            </p>
+            <div class="nuclear-card rounded-2xl p-6">
+                <div class="flex items-center gap-3 mb-2">
+                    <i class="fas fa-brain text-green-400"></i>
+                    <h3 class="text-2xl font-semibold text-green-300">Contexto clínico</h3>
+                </div>
+                <p class="text-gray-200">Se consideran cuadros como <b>espasticidad</b> tras lesión neurológica, y procesos postquirúrgicos o traumáticos que requieren terapia progresiva.</p>
             </div>
-        </div>
+        </section>
 
-        <!-- Objective Section -->
-        <div class="gradient-card rounded-3xl p-10 mb-12">
+        <!-- Objetivo del proyecto -->
+        <section class="content-card rounded-3xl p-10 mb-12">
             <div class="flex items-center gap-4 mb-8">
-                <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center">
+                <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-2xl flex items-center justify-center">
                     <i class="fas fa-bullseye text-2xl text-white"></i>
                 </div>
-                <h2 class="text-4xl font-bold text-white">Objetivo del Proyecto</h2>
+                <h2 class="text-4xl font-bold text-white">Objetivo del proyecto</h2>
             </div>
-            
-            <div class="bg-black bg-opacity-30 rounded-2xl p-8 border border-blue-400 border-opacity-30">
-                <p class="text-xl text-gray-200 leading-relaxed font-medium">
-                    Diseñar, desarrollar y validar un prototipo para terapia en extremidades superiores mediante 
-                    tecnologías CAD/CAM, actuadores eléctricos/neumáticos y control programable (Arduino o PLC).
-                </p>
-            </div>
-        </div>
+            <p class="text-gray-200 text-lg">
+                Diseñar, desarrollar y validar un <b>prototipo para terapia en extremidades superiores</b> empleando tecnologías <b>CAD/CAM</b>,
+                <b>actuadores eléctricos o neumáticos</b> y <b>control programable</b> (Arduino o PLC), orientado a aplicaciones clínicas y académicas.
+            </p>
+        </section>
 
-        <!-- Benefits Section -->
-        <div class="content-card rounded-3xl p-10 mb-12">
+        <!-- Metodología de desarrollo -->
+        <section class="content-card rounded-3xl p-10 mb-12">
             <div class="flex items-center gap-4 mb-8">
-                <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-blue-500 rounded-2xl flex items-center justify-center">
-                    <i class="fas fa-heart-pulse text-2xl text-white"></i>
+                <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-teal-500 rounded-2xl flex items-center justify-center">
+                    <i class="fas fa-diagram-project text-2xl text-white"></i>
                 </div>
-                <h2 class="text-4xl font-bold text-white">Beneficios Directos</h2>
+                <h2 class="text-4xl font-bold text-white">Metodología de desarrollo</h2>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="benefit-icon rounded-2xl p-6 backdrop-filter backdrop-blur-sm">
-                    <div class="flex items-center gap-4 mb-4">
-                        <i class="fas fa-user-injured text-3xl text-blue-400"></i>
-                        <h3 class="text-xl font-semibold text-white">Lesiones Traumáticas</h3>
-                    </div>
-                    <p class="text-gray-300">Tratamiento para lesiones por sobrecarga y traumas en extremidades superiores.</p>
-                </div>
-                
-                <div class="benefit-icon rounded-2xl p-6 backdrop-filter backdrop-blur-sm">
-                    <div class="flex items-center gap-4 mb-4">
-                        <i class="fas fa-bone text-3xl text-blue-400"></i>
-                        <h3 class="text-xl font-semibold text-white">Artritis</h3>
-                    </div>
-                    <p class="text-gray-300">Terapia especializada para pacientes con condiciones artríticas.</p>
-                </div>
-                
-                <div class="benefit-icon rounded-2xl p-6 backdrop-filter backdrop-blur-sm">
-                    <div class="flex items-center gap-4 mb-4">
-                        <i class="fas fa-fire text-3xl text-blue-400"></i>
-                        <h3 class="text-xl font-semibold text-white">Quemaduras</h3>
-                    </div>
-                    <p class="text-gray-300">Rehabilitación controlada para recuperación de movilidad post-quemaduras.</p>
-                </div>
-                
-                <div class="benefit-icon rounded-2xl p-6 backdrop-filter backdrop-blur-sm">
-                    <div class="flex items-center gap-4 mb-4">
-                        <i class="fas fa-user-md text-3xl text-blue-400"></i>
-                        <h3 class="text-xl font-semibold text-white">Post-Cirugías</h3>
-                    </div>
-                    <p class="text-gray-300">Recuperación asistida después de intervenciones quirúrgicas.</p>
-                </div>
-                
-                <div class="benefit-icon rounded-2xl p-6 backdrop-filter backdrop-blur-sm md:col-span-2">
-                    <div class="flex items-center gap-4 mb-4">
-                        <i class="fas fa-brain text-3xl text-blue-400"></i>
-                        <h3 class="text-xl font-semibold text-white">Parálisis Espástica</h3>
-                    </div>
-                    <p class="text-gray-300">Tratamiento especializado para condiciones neurológicas.</p>
-                </div>
-            </div>
-        </div>
+            <ol class="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-300">
+                <li class="tech-card rounded-2xl p-6 border border-purple-400/40">
+                    <h3 class="text-white font-semibold mb-2 flex items-center gap-2"><i class="fas fa-lightbulb text-purple-300"></i> 1) Diseño conceptual</h3>
+                    <p>Definición de requerimientos clínicos y de usuario (seguridad, rangos de movimiento, repetibilidad).</p>
+                </li>
+                <li class="tech-card rounded-2xl p-6 border border-purple-400/40">
+                    <h3 class="text-white font-semibold mb-2 flex items-center gap-2"><i class="fas fa-cube text-purple-300"></i> 2) Modelado CAD</h3>
+                    <p>Construcción en SolidWorks/Inventor y selección de materiales para comodidad y asepsia.</p>
+                </li>
+                <li class="tech-card rounded-2xl p-6 border border-purple-400/40">
+                    <h3 class="text-white font-semibold mb-2 flex items-center gap-2"><i class="fas fa-vial text-purple-300"></i> 3) Simulación</h3>
+                    <p>Análisis de esfuerzos y desplazamientos; validación de topologías de actuadores.</p>
+                </li>
+                <li class="tech-card rounded-2xl p-6 border border-purple-400/40">
+                    <h3 class="text-white font-semibold mb-2 flex items-center gap-2"><i class="fas fa-print text-purple-300"></i> 4) Fabricación</h3>
+                    <p>Impresión 3D/CNC de piezas y montaje modular para mantenimiento.</p>
+                </li>
+                <li class="tech-card rounded-2xl p-6 border border-purple-400/40">
+                    <h3 class="text-white font-semibold mb-2 flex items-center gap-2"><i class="fas fa-microchip text-purple-300"></i> 5) Control</h3>
+                    <p>Integración con Arduino/PLC; lazo de control para movimiento seguro y parametrizable.</p>
+                </li>
+                <li class="tech-card rounded-2xl p-6 border border-purple-400/40">
+                    <h3 class="text-white font-semibold mb-2 flex items-center gap-2"><i class="fas fa-stethoscope text-purple-300"></i> 6) Pruebas</h3>
+                    <p>Ensayos funcionales, validación con terapeutas y ajustes ergonómicos.</p>
+                </li>
+            </ol>
+        </section>
 
-        <!-- Methodology Section -->
-        <div class="content-card rounded-3xl p-10 mb-12">
+        <!-- Características del prototipo -->
+        <section class="content-card rounded-3xl p-10 mb-12">
             <div class="flex items-center gap-4 mb-8">
-                <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center">
-                    <i class="fas fa-cogs text-2xl text-white"></i>
+                <div class="w-16 h-16 bg-gradient-to-r from-teal-500 to-emerald-500 rounded-2xl flex items-center justify-center">
+                    <i class="fas fa-screwdriver-wrench text-2xl text-white"></i>
                 </div>
-                <h2 class="text-4xl font-bold text-white">Metodología de Desarrollo</h2>
+                <h2 class="text-4xl font-bold text-white">Características del prototipo</h2>
             </div>
-            
-            <div class="space-y-6">
-                <div class="flex items-start space-x-6 group">
-                    <div class="step-number flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center font-bold text-white text-xl">1</div>
-                    <div class="flex-1 bg-black bg-opacity-20 rounded-2xl p-6 border border-blue-400 border-opacity-20 group-hover:border-opacity-40 transition-all">
-                        <h3 class="text-xl font-semibold text-white mb-3 flex items-center gap-3">
-                            <i class="fas fa-lightbulb text-blue-400"></i>
-                            Diseño Conceptual
-                        </h3>
-                        <p class="text-gray-300">Definición de requisitos y especificaciones técnicas del prototipo.</p>
-                    </div>
-                </div>
-                
-                <div class="flex items-start space-x-6 group">
-                    <div class="step-number flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center font-bold text-white text-xl">2</div>
-                    <div class="flex-1 bg-black bg-opacity-20 rounded-2xl p-6 border border-blue-400 border-opacity-20 group-hover:border-opacity-40 transition-all">
-                        <h3 class="text-xl font-semibold text-white mb-3 flex items-center gap-3">
-                            <i class="fas fa-cube text-blue-400"></i>
-                            Modelado CAD
-                        </h3>
-                        <p class="text-gray-300">Diseño 3D en SolidWorks o Inventor para visualización y análisis.</p>
-                    </div>
-                </div>
-                
-                <div class="flex items-start space-x-6 group">
-                    <div class="step-number flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center font-bold text-white text-xl">3</div>
-                    <div class="flex-1 bg-black bg-opacity-20 rounded-2xl p-6 border border-blue-400 border-opacity-20 group-hover:border-opacity-40 transition-all">
-                        <h3 class="text-xl font-semibold text-white mb-3 flex items-center gap-3">
-                            <i class="fas fa-chart-line text-blue-400"></i>
-                            Simulación
-                        </h3>
-                        <p class="text-gray-300">Análisis de esfuerzos y desplazamientos para validar el diseño.</p>
-                    </div>
-                </div>
-                
-                <div class="flex items-start space-x-6 group">
-                    <div class="step-number flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center font-bold text-white text-xl">4</div>
-                    <div class="flex-1 bg-black bg-opacity-20 rounded-2xl p-6 border border-blue-400 border-opacity-20 group-hover:border-opacity-40 transition-all">
-                        <h3 class="text-xl font-semibold text-white mb-3 flex items-center gap-3">
-                            <i class="fas fa-industry text-blue-400"></i>
-                            Fabricación
-                        </h3>
-                        <p class="text-gray-300">Manufactura mediante impresión 3D o CNC.</p>
-                    </div>
-                </div>
-                
-                <div class="flex items-start space-x-6 group">
-                    <div class="step-number flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center font-bold text-white text-xl">5</div>
-                    <div class="flex-1 bg-black bg-opacity-20 rounded-2xl p-6 border border-blue-400 border-opacity-20 group-hover:border-opacity-40 transition-all">
-                        <h3 class="text-xl font-semibold text-white mb-3 flex items-center gap-3">
-                            <i class="fas fa-microchip text-blue-400"></i>
-                            Control Programable
-                        </h3>
-                        <p class="text-gray-300">Implementación de sistema de control mediante controlador comercial.</p>
-                    </div>
-                </div>
-                
-                <div class="flex items-start space-x-6 group">
-                    <div class="step-number flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center font-bold text-white text-xl">6</div>
-                    <div class="flex-1 bg-black bg-opacity-20 rounded-2xl p-6 border border-blue-400 border-opacity-20 group-hover:border-opacity-40 transition-all">
-                        <h3 class="text-xl font-semibold text-white mb-3 flex items-center gap-3">
-                            <i class="fas fa-vial text-blue-400"></i>
-                            Pruebas Funcionales
-                        </h3>
-                        <p class="text-gray-300">Validación del prototipo con pruebas reales de funcionamiento.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <li class="info-card rounded-2xl p-6">
+                    <h3 class="text-white font-semibold mb-2"><i class="fas fa-arrows-rotate mr-2 text-blue-300"></i> Módulos intercambiables</h3>
+                    <p class="text-gray-300">Configuración para mano, muñeca y antebrazo, adaptable a distintos pacientes.</p>
+                </li>
+                <li class="info-card rounded-2xl p-6">
+                    <h3 class="text-white font-semibold mb-2"><i class="fas fa-wind mr-2 text-blue-300"></i> Actuación eléctrica/neumática</h3>
+                    <p class="text-gray-300">Selección según fuerza requerida, precisión y costo.</p>
+                </li>
+                <li class="info-card rounded-2xl p-6">
+                    <h3 class="text-white font-semibold mb-2"><i class="fas fa-shield-heart mr-2 text-blue-300"></i> Seguridad</h3>
+                    <p class="text-gray-300">Topes mecánicos, límites de velocidad y parada de emergencia.</p>
+                </li>
+                <li class="info-card rounded-2xl p-6">
+                    <h3 class="text-white font-semibold mb-2"><i class="fas fa-sliders mr-2 text-blue-300"></i> Sesiones parametrizables</h3>
+                    <p class="text-gray-300">Control de amplitud, repetición y tiempos de terapia.</p>
+                </li>
+            </ul>
+        </section>
 
-        <!-- Technical Specifications -->
-        <div class="content-card rounded-3xl p-10 mb-12">
-            <div class="flex items-center gap-4 mb-8">
-                <div class="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl flex items-center justify-center">
-                    <i class="fas fa-wrench text-2xl text-white"></i>
-                </div>
-                <h2 class="text-4xl font-bold text-white">Especificaciones Técnicas</h2>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="spec-card rounded-2xl p-8">
-                    <div class="flex items-center gap-3 mb-6">
-                        <i class="fas fa-cog text-3xl text-blue-400"></i>
-                        <h3 class="text-2xl font-semibold text-white">Componentes Mecánicos</h3>
-                    </div>
-                    <ul class="space-y-4 text-gray-300">
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-blue-400 text-sm"></i>
-                            <span>Estructura: Aluminio 6061-T6</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-blue-400 text-sm"></i>
-                            <span>5 grados de libertad</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-blue-400 text-sm"></i>
-                            <span>Rango: Flexión 0-150°</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-blue-400 text-sm"></i>
-                            <span>Peso: 2.5 kg</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-blue-400 text-sm"></i>
-                            <span>Material contacto: Silicona médica</span>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="spec-card rounded-2xl p-8">
-                    <div class="flex items-center gap-3 mb-6">
-                        <i class="fas fa-bolt text-3xl text-purple-400"></i>
-                        <h3 class="text-2xl font-semibold text-white">Sistema de Actuación</h3>
-                    </div>
-                    <ul class="space-y-4 text-gray-300">
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-purple-400 text-sm"></i>
-                            <span>Servomotores alta precisión</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-purple-400 text-sm"></i>
-                            <span>Torque: 15 Nm/articulación</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-purple-400 text-sm"></i>
-                            <span>Velocidad: 0-60°/seg</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-purple-400 text-sm"></i>
-                            <span>Presión neumática: 0-6 bar</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-purple-400 text-sm"></i>
-                            <span>Batería: 24V DC, 5000mAh</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- Clinical Applications -->
-        <div class="content-card rounded-3xl p-10 mb-12">
-            <div class="flex items-center gap-4 mb-8">
-                <div class="w-16 h-16 bg-gradient-to-r from-red-500 to-pink-500 rounded-2xl flex items-center justify-center">
-                    <i class="fas fa-hospital text-2xl text-white"></i>
-                </div>
-                <h2 class="text-4xl font-bold text-white">Aplicaciones Clínicas</h2>
-            </div>
-            
-            <div class="space-y-6">
-                <div class="border-l-4 border-blue-400 pl-6 bg-black bg-opacity-20 rounded-2xl p-6">
-                    <div class="flex items-center gap-3 mb-3">
-                        <i class="fas fa-brain text-2xl text-blue-400"></i>
-                        <h3 class="text-xl font-semibold text-white">Post-ACV</h3>
-                    </div>
-                    <p class="text-gray-300">Rehabilitación de hemiparesia con movimiento inducido, ejercicios pasivos y fortalecimiento progresivo. 300+ repeticiones diarias mejoran recuperación en 40%.</p>
-                </div>
-                
-                <div class="border-l-4 border-purple-400 pl-6 bg-black bg-opacity-20 rounded-2xl p-6">
-                    <div class="flex items-center gap-3 mb-3">
-                        <i class="fas fa-hand-paper text-2xl text-purple-400"></i>
-                        <h3 class="text-xl font-semibold text-white">Lesiones Plexo Braquial</h3>
-                    </div>
-                    <p class="text-gray-300">Movilización temprana, estimulación neuromuscular y ejercicios de coordinación para prevenir atrofia.</p>
-                </div>
-                
-                <div class="border-l-4 border-indigo-400 pl-6 bg-black bg-opacity-20 rounded-2xl p-6">
-                    <div class="flex items-center gap-3 mb-3">
-                        <i class="fas fa-child text-2xl text-indigo-400"></i>
-                        <h3 class="text-xl font-semibold text-white">Parálisis Cerebral</h3>
-                    </div>
-                    <p class="text-gray-300">Modo gamificación para niños, ajuste de tamaño, reducción de espasticidad con movimientos controlados.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Safety & Cost -->
-        <div class="content-card rounded-3xl p-10 mb-12">
+        <!-- Resultados esperados -->
+        <section class="success-card rounded-3xl p-10 mb-12 text-white">
             <div class="flex items-center gap-4 mb-8">
                 <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-teal-500 rounded-2xl flex items-center justify-center">
-                    <i class="fas fa-shield-alt text-2xl text-white"></i>
+                    <i class="fas fa-rocket text-2xl text-white"></i>
                 </div>
-                <h2 class="text-4xl font-bold text-white">Seguridad y Costos</h2>
+                <h2 class="text-4xl font-bold">Resultados esperados</h2>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="spec-card rounded-2xl p-8">
-                    <div class="flex items-center gap-3 mb-6">
-                        <i class="fas fa-shield-virus text-3xl text-green-400"></i>
-                        <h3 class="text-2xl font-semibold text-white">Seguridad</h3>
-                    </div>
-                    <ul class="space-y-4 text-gray-300">
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-green-400 text-sm"></i>
-                            <span>Botón emergencia (detención <0.5s)</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-green-400 text-sm"></i>
-                            <span>Límites de fuerza automáticos</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-green-400 text-sm"></i>
-                            <span>Normas ISO 13485, IEC 60601-1</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-green-400 text-sm"></i>
-                            <span>Validación clínica con 50+ pacientes</span>
-                        </li>
-                    </ul>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-black/30 rounded-2xl p-6 border border-green-400/30">
+                    <h3 class="text-xl font-semibold mb-2"><i class="fas fa-person-walking text-green-300 mr-2"></i> Mejora funcional</h3>
+                    <p class="text-green-100">Apoyo al incremento de movilidad y reducción de dolor/rigidez.</p>
                 </div>
-                
-                <div class="spec-card rounded-2xl p-8">
-                    <div class="flex items-center gap-3 mb-6">
-                        <i class="fas fa-dollar-sign text-3xl text-teal-400"></i>
-                        <h3 class="text-2xl font-semibold text-white">Análisis Económico</h3>
-                    </div>
-                    <ul class="space-y-4 text-gray-300">
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-teal-400 text-sm"></i>
-                            <span>Costo prototipo: $3,500 USD</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-teal-400 text-sm"></i>
-                            <span>Producción: $5,000-8,000 USD</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-teal-400 text-sm"></i>
-                            <span>Mercado: $15,000-50,000 USD</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-teal-400 text-sm"></i>
-                            <span>Ahorro: 60-70% más económico</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-teal-400 text-sm"></i>
-                            <span>ROI clínicas: 2-3 meses</span>
-                        </li>
-                    </ul>
+                <div class="bg-black/30 rounded-2xl p-6 border border-green-400/30">
+                    <h3 class="text-xl font-semibold mb-2"><i class="fas fa-chart-line text-green-300 mr-2"></i> Repetibilidad</h3>
+                    <p class="text-green-100">Movimientos consistentes y medibles para seguimiento clínico.</p>
+                </div>
+                <div class="bg-black/30 rounded-2xl p-6 border border-green-400/30">
+                    <h3 class="text-xl font-semibold mb-2"><i class="fas fa-hand-holding-dollar text-green-300 mr-2"></i> Accesibilidad</h3>
+                    <p class="text-green-100">Diseño y procesos que facilitan costos competitivos.</p>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Impact Section -->
-        <div class="impact-section rounded-3xl p-10 mb-12 text-white relative overflow-hidden">
-            <div class="relative z-10">
-                <div class="flex items-center gap-4 mb-8">
-                    <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center">
-                        <i class="fas fa-globe text-2xl text-white"></i>
-                    </div>
-                    <h2 class="text-4xl font-bold text-white">Impacto y Aplicabilidad</h2>
+        <!-- Impacto y aplicabilidad -->
+        <section class="content-card rounded-3xl p-10 mb-12">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-16 h-16 bg-gradient-to-r from-pink-500 to-orange-500 rounded-2xl flex items-center justify-center">
+                    <i class="fas fa-bolt text-2xl text-white"></i>
                 </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
-                    <div class="bg-black bg-opacity-30 rounded-2xl p-6 border border-blue-400 border-opacity-30">
-                        <div class="flex items-center gap-3 mb-4">
-                            <i class="fas fa-hospital text-3xl text-blue-400"></i>
-                            <h3 class="text-xl font-semibold">Sector Biomédico</h3>
-                        </div>
-                        <p class="text-blue-200 mb-4">Apoyo directo en fisioterapia</p>
-                        <ul class="text-sm text-gray-300 space-y-2">
-                            <li class="flex items-center gap-2">
-                                <i class="fas fa-check-circle text-blue-400 text-xs"></i>
-                                Hospitales públicos/privados
-                            </li>
-                            <li class="flex items-center gap-2">
-                                <i class="fas fa-check-circle text-blue-400 text-xs"></i>
-                                Centros rehabilitación
-                            </li>
-                            <li class="flex items-center gap-2">
-                                <i class="fas fa-check-circle text-blue-400 text-xs"></i>
-                                Clínicas especializadas
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <div class="bg-black bg-opacity-30 rounded-2xl p-6 border border-purple-400 border-opacity-30">
-                        <div class="flex items-center gap-3 mb-4">
-                            <i class="fas fa-graduation-cap text-3xl text-purple-400"></i>
-                            <h3 class="text-xl font-semibold">Sector Educativo</h3>
-                        </div>
-                        <p class="text-purple-200 mb-4">Formación en mecatrónica</p>
-                        <ul class="text-sm text-gray-300 space-y-2">
-                            <li class="flex items-center gap-2">
-                                <i class="fas fa-check-circle text-purple-400 text-xs"></i>
-                                Universidades
-                            </li>
-                            <li class="flex items-center gap-2">
-                                <i class="fas fa-check-circle text-purple-400 text-xs"></i>
-                                Institutos técnicos
-                            </li>
-                            <li class="flex items-center gap-2">
-                                <i class="fas fa-check-circle text-purple-400 text-xs"></i>
-                                Centros investigación
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <div class="bg-black bg-opacity-30 rounded-2xl p-6 border border-cyan-400 border-opacity-30">
-                        <div class="flex items-center gap-3 mb-4">
-                            <i class="fas fa-industry text-3xl text-cyan-400"></i>
-                            <h3 class="text-xl font-semibold">Sector Industrial</h3>
-                        </div>
-                        <p class="text-cyan-200 mb-4">Tecnología accesible</p>
-                        <ul class="text-sm text-gray-300 space-y-2">
-                            <li class="flex items-center gap-2">
-                                <i class="fas fa-check-circle text-cyan-400 text-xs"></i>
-                                Manufactura médica
-                            </li>
-                            <li class="flex items-center gap-2">
-                                <i class="fas fa-check-circle text-cyan-400 text-xs"></i>
-                                Startups healthtech
-                            </li>
-                            <li class="flex items-center gap-2">
-                                <i class="fas fa-check-circle text-cyan-400 text-xs"></i>
-                                Exportación
-                            </li>
-                        </ul>
-                    </div>
+                <h2 class="text-4xl font-bold text-white">Impacto y aplicabilidad</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="warning-card rounded-2xl p-6">
+                    <h3 class="text-white font-semibold mb-2"><i class="fas fa-hospital mr-2 text-red-300"></i> Sector biomédico</h3>
+                    <p class="text-gray-200">Soporte a fisioterapia y rehabilitación con protocolos reproducibles.</p>
                 </div>
-                
-                <div class="bg-black bg-opacity-40 rounded-2xl p-8 border border-white border-opacity-20">
-                    <div class="flex items-center gap-3 mb-6">
-                        <i class="fas fa-chart-line text-3xl text-white"></i>
-                        <h3 class="text-2xl font-semibold">Impacto Proyectado (5 años)</h3>
-                    </div>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-                        <div class="bg-blue-500 bg-opacity-20 rounded-xl p-4 border border-blue-400 border-opacity-30">
-                            <p class="text-3xl font-bold text-blue-400">10,000+</p>
-                            <p class="text-gray-300">Pacientes</p>
-                        </div>
-                        <div class="bg-purple-500 bg-opacity-20 rounded-xl p-4 border border-purple-400 border-opacity-30">
-                            <p class="text-3xl font-bold text-purple-400">200+</p>
-                            <p class="text-gray-300">Centros</p>
-                        </div>
-                        <div class="bg-green-500 bg-opacity-20 rounded-xl p-4 border border-green-400 border-opacity-30">
-                            <p class="text-3xl font-bold text-green-400">40%</p>
-                            <p class="text-gray-300">Menos tiempo</p>
-                        </div>
-                        <div class="bg-yellow-500 bg-opacity-20 rounded-xl p-4 border border-yellow-400 border-opacity-30">
-                            <p class="text-3xl font-bold text-yellow-400">$2M</p>
-                            <p class="text-gray-300">Ahorro</p>
-                        </div>
-                    </div>
+                <div class="warning-card rounded-2xl p-6">
+                    <h3 class="text-white font-semibold mb-2"><i class="fas fa-chalkboard-teacher mr-2 text-red-300"></i> Sector educativo</h3>
+                    <p class="text-gray-200">Formación en mecatrónica aplicada, control y diseño CAD.</p>
+                </div>
+                <div class="warning-card rounded-2xl p-6">
+                    <h3 class="text-white font-semibold mb-2"><i class="fas fa-industry mr-2 text-red-300"></i> Sector industrial</h3>
+                    <p class="text-gray-200">Base tecnológica adaptable a otras aplicaciones de asistencia.</p>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Resources Section -->
-        <div class="content-card rounded-3xl p-10">
+        <!-- Conclusiones -->
+        <section class="content-card rounded-3xl p-10 mb-12">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-blue-500 rounded-2xl flex items-center justify-center">
+                    <i class="fas fa-flag-checkered text-2xl text-white"></i>
+                </div>
+                <h2 class="text-4xl font-bold text-white">Conclusiones</h2>
+            </div>
+            <ul class="space-y-4 text-gray-300">
+                <li class="tech-card rounded-xl p-6 border border-green-400/40">
+                    El prototipo propone un enfoque seguro y parametrizable para asistir la terapia de mano y miembro superior.
+                </li>
+                <li class="tech-card rounded-xl p-6 border border-blue-400/40">
+                    La integración CAD–control programable agiliza iteraciones y reduce riesgos en la práctica clínica.
+                </li>
+                <li class="tech-card rounded-xl p-6 border border-cyan-400/40">
+                    Su modularidad facilita la transferencia a entornos educativos e industriales.
+                </li>
+            </ul>
+        </section>
+
+        <!-- Referencias (del PPT) -->
+        <section class="content-card rounded-3xl p-10 mb-12">
             <div class="flex items-center gap-4 mb-8">
                 <div class="w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center">
+                    <i class="fas fa-book text-2xl text-white"></i>
+                </div>
+                <h2 class="text-4xl font-bold text-white">Referencias</h2>
+            </div>
+            <ul class="space-y-3 text-gray-300">
+                <li class="info-card p-5 rounded-xl">Vectorpocket. (s.f.). <i>Ilustración de una mano humana tocando una mano robótica</i>. Shutterstock. https://www.shutterstock.com/es/image-vector/vector-illustration-depicting-human-robot-2284918883</li>
+                <li class="info-card p-5 rounded-xl">E-Neurocenter. (s.f.). <i>Entendiendo la espasticidad</i>. https://www.eneurocenter.com/entendiendo-la-espasticidad-el-camino-de-la-recuperacion-tras-una-lesion-neurologica/</li>
+                <li class="info-card p-5 rounded-xl">Concepto.de. (s.f.). <i>Diseño</i>. https://concepto.de/diseno/</li>
+                <li class="info-card p-5 rounded-xl">AETEMA. (s.f.). <i>Asociación Española de Terapias Manuales y Alternativas</i>. https://aetema.org/</li>
+                <li class="info-card p-5 rounded-xl">Webnexo. (s.f.). <i>5 habilidades que debe tener el investigador de mercados</i>. https://www.webnexo.es/5-habilidades-que-debe-tener-el-investigador-de-mercados/</li>
+                <li class="info-card p-5 rounded-xl">Guía Disc. (s.f.). <i>Nuevo guante robótico para la rehabilitación de la mano</i>. https://www.guiadisc.com/nuevo-guante-robotico-rehabilitacion-mano.html</li>
+            </ul>
+        </section>
+
+        <!-- Recursos -->
+        <section class="content-card rounded-3xl p-10">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-2xl flex items-center justify-center">
                     <i class="fas fa-download text-2xl text-white"></i>
                 </div>
                 <h2 class="text-4xl font-bold text-white">Recursos</h2>
             </div>
-            
-            <div class="space-y-6">
-                <a href="PRESENTACIÓN-JOHN SNEYDER TAMAYO ZAPATA-1020482385.pptx" 
-                   class="flex items-center p-6 bg-black bg-opacity-30 rounded-2xl border border-blue-400 border-opacity-30 hover:border-opacity-60 hover:bg-opacity-40 transition-all group">
-                    <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center mr-6 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-file-powerpoint text-2xl text-white"></i>
-                    </div>
-                    <div class="flex-1">
-                        <h3 class="text-xl font-semibold text-white mb-2 group-hover:text-blue-400 transition-colors">
-                            Descargar Presentación
-                        </h3>
-                        <p class="text-gray-400 group-hover:text-gray-300 transition-colors">
-                            Archivo PowerPoint (.pptx) - Presentación completa del proyecto
-                        </p>
-                    </div>
-                    <div class="text-blue-400 group-hover:translate-x-2 transition-transform">
-                        <i class="fas fa-arrow-right text-xl"></i>
-                    </div>
-                </a>
-            </div>
-        </div>
+            <a href="robot.pptx" class="resource-link flex items-center p-8 rounded-2xl border border-green-400/50 hover:border-green-400 transition-all duration-300 group hover:bg-green-500/10">
+                <div class="w-16 h-16 bg-green-500 rounded-2xl flex items-center justify-center mr-6">
+                    <i class="fas fa-file-powerpoint text-2xl text-white"></i>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-semibold text-white group-hover:text-green-300 transition">Descargar presentación</h3>
+                    <p class="text-lg text-gray-400 group-hover:text-green-200 transition">Archivo PowerPoint (.pptx)</p>
+                </div>
+                <div class="ml-auto">
+                    <i class="fas fa-arrow-right text-2xl text-green-400 group-hover:translate-x-2 transition-transform"></i>
+                </div>
+            </a>
+        </section>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-black bg-opacity-50 border-t border-gray-800 backdrop-filter backdrop-blur-10 py-12 mt-20">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center">
-                <div class="flex items-center justify-center gap-4 mb-6">
-                    <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full flex items-center justify-center">
-                        <i class="fas fa-hand-paper text-white text-lg"></i>
+    <footer class="relative bg-gray-900 text-white py-16 mt-20 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-green-900/20 to-blue-900/20"></div>
+        <div class="floating-atoms"></div>
+        <div class="relative z-10 max-w-6xl mx-auto px-4">
+            <div class="text-center space-y-6">
+                <div class="inline-flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 bg-gradient-to-r from-green-400 to-blue-400 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-robot text-xl text-white"></i>
                     </div>
-                    <div>
-                        <h3 class="text-xl font-semibold text-white">Terapia en Extremidades Superiores</h3>
-                        <p class="text-gray-400 text-sm">John Sneyder Tamayo Zapata</p>
-                    </div>
+                    <h3 class="text-2xl font-bold text-white">Proyecto de Terapia en Extremidades Superiores</h3>
                 </div>
-                
-                <div class="border-t border-gray-800 pt-6">
-                    <div class="flex flex-col md:flex-row items-center justify-center gap-6 mb-4">
-                        <div class="flex items-center gap-3 text-gray-400">
-                            <i class="fas fa-user text-blue-400"></i>
-                            <span>Gustavo Adolfo Pérez Pérez - 1021513348</span>
-                        </div>
-                        <div class="hidden md:block w-px h-4 bg-gray-600"></div>
-                        <div class="flex items-center gap-3 text-gray-400">
-                            <i class="fas fa-university text-blue-400"></i>
-                            <span>Universidad Nacional de Colombia</span>
-                        </div>
-                    </div>
-                    
-                    <p class="text-gray-500 text-sm">
-                        © 2025 - Conferencias APUN | Portafolio Académico
-                    </p>
-                </div>
+                <p class="text-gray-400">Facultad de Minas • Ingeniería de Control • Universidad Nacional de Colombia</p>
+                <div class="h-px bg-gradient-to-r from-transparent via-green-400 to-transparent w-64 mx-auto"></div>
+                <p class="text-sm text-gray-500">© 2025 • Prototipo de asistencia a la rehabilitación • Medellín</p>
             </div>
         </div>
     </footer>
